@@ -1,11 +1,11 @@
-import openai
+from openai import OpenAI
 import streamlit as st
 
 # Set the title of the Streamlit app
 st.title("Simple chat")
 
 # Load OpenAI API key from Streamlit secrets
-openai.api_key = st.secrets["openai_api_key"]
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 # Define the GPT model to be used
 GPT_MODEL = "gpt-4-1106-preview"
@@ -31,7 +31,7 @@ if user_input:
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        completion = openai.chat.completions.create(
+        completion = client.chat.completions.create(
             model=GPT_MODEL,
             messages=[
                 {"role": m["role"], "content": m["content"]}
